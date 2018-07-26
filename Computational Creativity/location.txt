@@ -1,0 +1,8 @@
+castle
+hill
+cave
+forest
+field
+village
+pub
+city

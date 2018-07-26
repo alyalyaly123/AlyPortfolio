@@ -1,0 +1,8 @@
+dwarf
+farmer
+doctor
+soldier
+guard
+blacksmith
+elf
+magician

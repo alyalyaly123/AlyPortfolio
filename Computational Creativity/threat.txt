@@ -1,0 +1,10 @@
+dragon
+monster
+orc
+army
+minotaur 
+cyclops
+witch
+demon
+imp
+ghost
