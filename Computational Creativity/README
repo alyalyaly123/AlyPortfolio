@@ -1,0 +1,31 @@
+README
+Welcome to the babbling bard dialogue creation system. The current program currently comes with several templates that can be edited at will by the user. 
+In order to generate templates simply edit the provided text files and add/remove whichever template 
+you'd prefer. 
+Extract this file from the zip in order to run it.
+Requires internet connection in order to run.
+Currently the system has the following template changes:
+FantasyNames, Factions and occupation: When generating random characters the system will select these from the list 
+
+
+{templates}
+[adjective] Replaces with a synonym from a random adjective from the list of adjectives for that section.
+[noun] replaces with a random noun from the list of adjectives for that section.
+[location] used within neutral, replace with a location from list 
+[threat] Replace with a threat from the list 
+
+[adjectiveOpposite] Replaced with an antonym for the synonym 
+
+[coAdjective] Use alongside an adjective and get a fitting word to use with this adjective.
+[poetic] Generate a simile for the adjective using the jigsaw bard 
+[fittingNoun] generate an individual fitting noun for the adjective using the jigsaw bard
+[metaAdjective] [metaNoun] use alongside a noun (either a threat,occupation or general noun) to create a metaphor pair. 
+
+
+Blacklists: 
+If words/phrases generated do not fit your intended theme then use the blacklist to remove them from the system.
+Currently used to prevent obscenities and unthematic words from entering the system.
+
+Errors: 
+If the system returns the same adjective or a synonym of the adjective when using the web services or 
+antonyms then attempt with a seperate adjective, the web services reject certain words.
