@@ -1,0 +1,1 @@
+Refactor reply methods into one main method with a parameter choosing which reply is used.
