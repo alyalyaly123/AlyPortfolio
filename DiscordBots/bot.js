@@ -82,39 +82,7 @@ if (message.substring(0,4)== 'age.') {
 	}
 
 }
-//find mean of a string of numbers
-/*(if (message.substring(0,4)== 'avg.') {
-	var total=0;
-	var args = message.substring(4).split(' ');
-	var cmd=args[0].split(",");
-	args=args.splice(4);
-	for(
-	if(isNaN(parseInt(cmd))){
-	bot.sendMessage({
-		
-	to: channelID,
-	message:"Please input a number!" + cmd +"is not a number"
-	});
-	break;
-	}
-	
-	//if not a number
-	else{
-	
-	var numArgs= parseInt(cmd);
-	
-	var dateThing= new Date();
-	var year= dateThing.getFullYear();
-	var birthYear= year-numArgs;
-	bot.sendMessage({
-		
-	to: channelID,
-	message:"birthyear is "+ birthYear +"."
-	});
-		logger.info("you did it i guess");
-	}
 
-}*/
 
 //returns the exact response of the user: General message testing
 if (message.substring(0,7)== 'parrot.') {
@@ -135,21 +103,61 @@ if (message.substring(0,4)== 'rps.') {
 	rockPaper(user, userID, channelID, message, evt,cmd);
 	
 	}
-})
 
 
-/*
+
+
 if (message.substring(0,5)== 'dice.') {
 		logger.info("Dice roll!");
 
-	var args = message.substring(6).split(' ');
+	var args = message.substring(5).split(' ');
 	var cmd=args[0]
 	dice(user, userID, channelID, message, evt,cmd);
 	
 	}
-*/
 
+//find mean of a string of numbers-- move average to a function
+if (message.substring(0,4)== 'avg.') {
+	var total=0;
+	var sum=Number(0);
+	sum+=1;
+	logger.info("FIRST SUM"+sum);
+	var args = message.substring(4).split(' ');
+	var cmd=args[0].split(',');
+	bot.sendMessage({
+	to: channelID,
+	message:"Message is "+ cmd + "."
+	});
+	
+	if(!isNaN(cmd[0])){
+			sum=sum+cmd[0];
+			logger.info("sum is"+ sum);
+	for(var x=0; x<cmd.length; x++){
+		sum=+sum+1;
+		total=+total + +cmd[x];
+		logger.info(total);
+		logger.info("sums is "+sum);
+	}
+	var average= Number(total)/Number(cmd.length);
+	bot.sendMessage({
+	to: channelID,
+	message:"Mean is: "+ average + "."
+	});
+	}
+	else{
+		bot.sendMessage({
+	to: channelID,
+	message:"Not a number!"
+	});
+	}
+	
+	bot.sendMessage({ 	
+	to: channelID,
+	message:"Total is "+ total + "."
+	});
 
+}
+})
 
 function messageTest(user, userID, channelID, message, evt,cmd){
 	bot.sendMessage({
@@ -181,6 +189,10 @@ function rockPaper(user, userID, channelID, message, evt,cmd){
 		
 		if(cmd==compResponse){
 			logger.info("Draw!");
+			bot.sendMessage({
+		to: channelID,
+		message: "Draw! Player"+cmd +" Computer"+compResponse
+		});
 		}
 		else if((cmd=="rock" &&compResponse=="scissors") 
 				|| 
@@ -188,15 +200,21 @@ function rockPaper(user, userID, channelID, message, evt,cmd){
 				||
 				(cmd=="scissors"&&compResponse=="paper")){
 			logger.info("Player won! Player " +cmd +" computer" +compResponse);
+			bot.sendMessage({
+		to: channelID,
+		message: "Player won! Player"+cmd +" Computer"+compResponse
+		});
 			}
 		else{
-			logger.info("Computer won! Player "+cmd +"computer " +compResponse);
+			logger.info("Computer Lost! Player "+cmd +"computer " +compResponse);
+				bot.sendMessage({
+		to: channelID,
+		message: "Player Lost! Player "+cmd +" Computer"+compResponse
+		});
 			
 		}
 			
 			
-		
-
 	}
 	else{
 		logger.info("Incorrect input!Try again!");
@@ -208,19 +226,25 @@ function rockPaper(user, userID, channelID, message, evt,cmd){
 	
 }
 
-/*
+//basic dice with chosen number of sides
 function dice (user, userID, channelID, message, evt,cmd){
+	//cmd refers to sides of dice. Must be an integer
 	if(!isNaN(cmd)){
 		
 		var numb = Math.floor((Math.random() * cmd) + 1);
 			
-
-		logger.info("is a number, random number generated is "+ cmd+"");
+	bot.sendMessage({
+		to: channelID,
+		message:cmd + " is a number, random number generated is "+ numb+""
+		});
+		logger.info(cmd+ "is a number, random number generated is "+ numb+"");
 	}
 	else{
-		
+			bot.sendMessage({
+		to: channelID,
+		message: cmd + " is not a number."
+		});
 	
 	logger.info("Not a number");
 	}		
 }
-*/
