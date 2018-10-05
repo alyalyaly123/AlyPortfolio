@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Alasdair Dunbar, Angular test</title>
+    <base href="/">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        th:hover {
+ background-color: #ddd;
+ cursor: pointer;
+ 
+ }
+
+
+ li {
+	display: inline;
+	border: solid 1px black;
+	padding:10px;
+    border-radius: 10px;
+	cursor: pointer;
+    transition: background-color .3s;
+}
+li:hover {background-color: #ddd;}
+
+
+</style>
+
+</head>
+
+<body>
+
+    <div ng-app="myApp" ng-controller="myCtrl" app-root>
+	
+        <h2> The time is {{time}} </ht>
+
+            <table border=1 width=100%>
+                <tr>
+                    <th> Index </th>
+                    <th ng-click=orderFunct("id")> ID </th>
+                    <th ng-click=orderFunct("sys.country")> Country </th>
+                    <th ng-click=orderFunct("name")> Name </th>
+                    <th ng-click=orderFunct("coord.lon")> Coordinates </th>
+                    <th ng-click=orderFunct("main.temp")> Temp </th>
+                    <th ng-click=orderFunct("main.pressure")> Pressure </th>
+                    <th ng-click=orderFunct("main.humidity")> Humidity </th>
+                    <th ng-click=orderFunct("main.temp_min")> Minimum temperature </th>
+                    <th ng-click=orderFunct("main.temp_max")> Maximum temperature </th>
+                    <th ng-click=orderFunct("wind.speed")> Wind Speed </th>
+                    <th ng-click=orderFunct("main.deg")> Wind degree </th>
+                    <th ng-click=orderFunct("clouds.all")> Clouds </th>
+                    <th ng-click=orderFunct("weather[0].id")> Weather ID </th>
+                    <th ng-click=orderFunct("weather[0].main")> Main Weather </th>
+                    <th ng-click=orderFunct("weather[0].description")> Extended description </th>
+
+
+                </tr>
+                <tr ng-repeat="y in itemsOnPage | orderBy:myOrderBy | filter:countryFilter">
+                    <td> {{$index+1}} </td>
+                    <td> {{y.id}} </td>
+                    <td> {{y.sys.country}} </td>
+                    <td> {{y.name}} </td>
+                    <td> {{y.coord.lon + ","+y.coord.lat}} </td>
+                    <td> {{y.main.temp +"C"}} </td>
+                    <td> {{y.main.pressure}}</td>
+                    <td> {{y.main.humidity}}</td>
+
+                    <td> {{y.main.temp_min +"C"}} </td>
+                    <td> {{y.main.temp_max +"C"}} </td>
+                    <td> {{y.wind.speed}} </td>
+                    <td> {{y.wind.deg}} </td>
+                    <td> {{y.clouds.all}} </td>
+                    <td> {{y.weather[0].id}} </td>
+                    <td> {{y.weather[0].main}} </td>
+                    <td> {{y.weather[0].description}} </td>
+
+                </tr>
+            </table>
+            <div class="containerBox">
+                <ul class="paginator">
+                    <li class="page" ng-click=pageFunction(1)> 1 </li>
+                    <li class="page" ng-click=pageFunction(2)> 2 </li>
+                    <li class="page" ng-click=pageFunction(3)> 3</li>
+                </ul>
+            </div>
+
+            <p> RowCount </p>
+            <ul class="pageLength">
+                <li ng-model="rowLength" ng-click="pageFormatting(1)"> 1 </input>
+                <li ng-model="rowLength" ng-click="pageFormatting(3)"> 3 </input>
+                <li ng-model="rowLength" ng-click="pageFormatting(5)"> 5 </input>
+                <li ng-model="rowLength" ng-click="pageFormatting(10)"> 10 </input>
+                <li ng-model="rowLength" ng-click="pageFormatting(20)"> 20 </input>
+
+
+            </ul>
+            <!-- <input type="text"  ng-model="rowLength" ng-click="pageFormatting(rowLength)"> </input> -->
+
+            <p> Filter Data here </p>
+            <input type="text" ng-model="countryFilter"> </input>
+            <p> {{countryFilter}}</p>
+            <!-- <p> {{dataSet.city.name + " " + dataSet.list[1].weather[0].main}} </p> -->
+    </div>
+
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope, $location, $http, $timeout, $interval, $compile) {
+
+            $scope.countryFilter = "";
+            $scope.rowLength = 5;
+
+            $scope.pageFunction = function(y) {
+                $scope.currentPage = y;
+                
+                $scope.itemsOnPage = []
+
+                if ($scope.currentPage == 1) {
+
+                    var x = 0;
+                    var lengthAllowed = $scope.rowLength;
+
+                } else {
+                    console.log("aa");
+                    var x = Number($scope.rowLength) * Number(($scope.currentPage - 1));
+                    console.log("X is " + x);
+                    var lengthAllowed = Number(x) + Number($scope.rowLength);
+                    console.log("length allowed " + lengthAllowed);
+                }
+
+                while (x < $scope.dataSet.length && x < lengthAllowed) {
+                    console.log(lengthAllowed);
+
+                    $scope.itemsOnPage.push($scope.dataSet[x]);
+                    console.log("the starter x " + x);
+
+                    x++;
+                }
+                console.log($scope.itemsOnPage);
+            }
+			
+            /** Page formatting **/
+
+            $scope.pageFormatting = function(pageNo) {
+			
+			var list= document.getElementsByClassName("containerBox")[0];
+			while (list.hasChildNodes()) {   
+					list.removeChild(list.firstChild);
+					}    
+					
+                $scope.rowLength = pageNo;
+				$scope.currentPage=1;
+                var buttonNo = Math.ceil($scope.dataSet.length / pageNo);
+                console.log("no of buttons is " + buttonNo);
+                var counter = Number(1);
+				$scope.pageList= "<ul class=paginator>"
+                while (counter <= buttonNo) {
+                    $scope.pageList += "<li ng-click=pageFunction("+counter+")>" + counter + " </li>";
+                    counter = counter + 1;
+                }
+                $scope.pageList += '</ul>';
+				var toHtml= $compile($scope.pageList)($scope);
+				
+
+				angular.element(document.getElementsByClassName("containerBox")).append(toHtml);
+				$scope.pageFunction(1);
+
+				
+
+
+            }
+
+			/** Retrieving API data **/
+			
+            $http({
+                method: "GET",
+                url: "https://api.openweathermap.org/data/2.5/group?id=2639018,2147714,1880252,1609350,6539761,792680,360630,5128581,3530597,524901,2653877,2653941,2988507,2759794,2950159,1816670,3067696,1850147,703448,2643743&units=metric&appid=358a0e251e4e796a8c831345c9798a11"
+
+            }).then(function successCallback(response) {
+                $scope.dataSet = response.data.list;
+
+                console.log(response.data.list);
+
+                console.log(response.data.list[0].sys.country);
+                console.log(response);
+                $scope.pageFunction(1);
+
+            }, function errorCallback(response) {
+                console.log(response);
+            });
+
+
+            $scope.pagedItems = [];
+            $scope.currentPage = 0;
+            console.log($scope.currentPage);
+            $scope.time = new Date().toLocaleTimeString();
+            $interval(function() {
+                    $scope.time = new Date().toLocaleTimeString();
+                },
+                1000);
+
+
+            $scope.pageGrouping = function() {
+
+
+
+            }
+
+            $scope.currentPage = 0;
+
+            $scope.orderFunct = function(x) {
+                console.log(x);
+                $scope.myOrderBy = x;
+            }
+
+
+
+        });
+    </script>
+</body>
+
+</html>
