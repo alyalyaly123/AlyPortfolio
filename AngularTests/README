@@ -1,0 +1,4 @@
+Contains a working example of angular used to display an aspect of a weather API. 
+Work needed:
+Additional CSS styling in order to avoid the page looking bland. 
+Ability to search for specific city as opposed to the default ones chosen.
